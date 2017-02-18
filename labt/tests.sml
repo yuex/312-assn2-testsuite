@@ -55,6 +55,8 @@ struct
       ("../testsuite/labt/tests/case-redun1.T", TypeFail),
       ("../testsuite/labt/tests/case-redun2.T", TypeFail),
       ("../testsuite/labt/tests/case-redun3.T", TypeFail),
+      ("../testsuite/labt/tests/case-recc1.T", Pass (Num 1)),
+      ("../testsuite/labt/tests/case-recc2.T", Pass (Num 1)),
       ("../testsuite/labt/tests/pair1.T", Pass (Num 0)),
       ("../testsuite/labt/tests/pair2.T", Pass (Num 0)),
       ("../testsuite/labt/tests/pair3.T", Pass (Num 0)),
