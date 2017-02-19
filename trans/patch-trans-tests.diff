@@ -1,0 +1,16 @@
+diff --git a/tests.sml b/tests.sml
+index dd95861..1b93d5b 100644
+--- a/tests.sml
++++ b/tests.sml
+@@ -29,7 +29,10 @@ struct
+   type test = string * (Term.t expected_result)
+   val tests : test list = [] 
+   
+-  val testFiles = [("tests/case3.T", Pass (Num 0)),
++  val testFiles = [("tests/case3.T", Pass (Num 2)),
++                   ("tests/case2.T", Pass (Num 0)),
++                   ("tests/case.T", Pass (Num 1)),
++                   ("tests/let.T", Pass (Num 2)),
+                    ("tests/let2.T", Pass (Num 3))]
+  
+   val trans_files = []
