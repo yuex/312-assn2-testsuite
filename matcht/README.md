@@ -1,4 +1,4 @@
-# LabT/Sec2
+# MatchT/Sec3
 
     $ cd assn2
     $ git clone https://github.com/yuex/312-assn2-testsuite.git testsuite
