@@ -1,0 +1,1055 @@
+
+
+\documentclass[11pt]{article}
+\usepackage{fullpage}
+\usepackage{latexsym}
+\usepackage{verbatim}
+\usepackage{code,proof,amsthm,amssymb,amsmath,stmaryrd,tipa}
+\usepackage{ifthen}
+\usepackage{graphics}
+\usepackage{mathpartir}
+\usepackage{hyperref}
+\usepackage{times}
+
+%% Question macros
+\newcounter{question}[section]
+\newcounter{extracredit}[section]
+\newcounter{totalPoints}
+\setcounter{totalPoints}{0}
+\newcommand{\question}[1]
+{
+\bigskip
+\addtocounter{question}{1}
+\addtocounter{totalPoints}{#1}
+\noindent
+{\textbf{Task \thesection.\thequestion}}[#1 points]:
+
+
+}
+\newcommand{\ecquestion}
+{
+\bigskip
+\addtocounter{extracredit}{1}
+\noindent
+\textbf{Extra Credit \thesection.\theextracredit}:}
+
+%% Set to "false" to generate the problem set, set to "true" to generate the solution set
+\def\issolution{false}
+
+
+\newcounter{taskcounter}
+\newcounter{taskPercentCounter}
+\newcounter{taskcounterSection}
+\setcounter{taskcounter}{1}
+\setcounter{taskPercentCounter}{0}
+\setcounter{taskcounterSection}{\value{section}}
+\newcommand{\mayresettaskcounter}{\ifthenelse{\value{taskcounterSection} < \value{section}}
+{\setcounter{taskcounterSection}{\value{section}}\setcounter{taskcounter}{1}}{}}
+
+\newcommand{\jan}[1]{{\color{blue}[Jan: #1]}}
+
+
+% Solution-only - uses an "input" so that it's still safe to publish the problem set file
+\definecolor{solutioncolor}{rgb}{0.0, 0.0, 0.5}
+\newcommand{\solution}[1]
+  {\ifthenelse{\equal{\issolution}{true}}
+  {\begin{quote}
+    \addtocounter{taskcounter}{-1}
+    \fbox{\textcolor{solutioncolor}{\bf Solution \arabic{section}.\arabic{taskcounter}}}
+    \addtocounter{taskcounter}{1}
+    \textcolor{solutioncolor}{\input{./solution/#1}}
+  \end{quote}}
+  {}}
+
+\newcommand{\qbox}{\fbox{???}}
+
+\newcommand{\ms}[1]{\ensuremath{\mathsf{#1}}}
+\newcommand{\irl}[1]{\mathtt{#1}}
+
+\newcommand{\wildcard}{\ensuremath{\_}}
+\newcommand{\lam}{\irl{lam}}
+\newcommand{\fix}{\irl{fix}}
+\newcommand{\parr}[2]{#1 \to #2}
+\newcommand{\arr}[2]{#1\to #2}
+\newcommand{\pair}[2]{\langle #1, #2 \rangle}
+
+\newcommand{\unit}[0]{\left<\right>}
+\newcommand{\unitt}[0]{\irl{unit}}
+\newcommand{\stringt}[0]{\irl{string}}
+\newcommand{\tablet}[1]{\irl{table}(#1)}
+
+\newcommand{\natt}{\irl{nat}}
+\newcommand{\prodt}[2]{#1\times#2}
+\newcommand{\voidt}{\irl{void}}
+\newcommand{\sumt}[2]{#1 + #2}
+
+\newcommand{\intro}{\text{-I}}
+\newcommand{\elim}{\text{-E}}
+
+\newcommand{\val}[1]{#1~\textsf{val}}
+\newcommand{\abst}[2]{#1.#2}
+\newcommand{\steps}[2]{#1 \mapsto #2}
+\newcommand{\subst}[3]{[#1/#2]#3}
+\newcommand{\err}[1]{#1~\textsf{err}}
+
+\newcommand{\goesto}{\hookrightarrow}
+\newcommand{\hra}{\hookrightarrow}
+
+\newcommand{\proves}{\vdash}
+\newcommand{\hasType}[2]{#1 : #2}
+\newcommand{\typeJ}[3]{#1 \proves \hasType{#2}{#3}}
+\newcommand{\ctx}{\Gamma}
+\newcommand{\emptyCtx}{\emptyset}
+\newcommand{\xCtx}[2]{\ctx, \hasType{#1}{#2}}
+\newcommand{\typeJC}[2]{\typeJ{\ctx}{#1}{#2}}
+
+\newcommand{\valrule}{\textsf{v}}
+\newcommand{\progrule}{\textsf{s}}
+\newcommand{\elimrule}{\textsf{e}}
+
+\newcommand{\zero}{\irl{z}}
+\newcommand{\suc}[1]{\irl{s}(#1)}
+\newcommand{\rec}[5]{\irl{rec}\{z \goesto #2 \por \suc{#3} ~\irl{with}~#4 \goesto #5\}(#1)}
+
+
+\newcommand{\bool}{\irl{bool}}
+\newcommand{\true}{\irl{true}}
+\newcommand{\false}{\irl{false}}
+\newcommand{\ifb}[3]{\irl{if}(#1;#2;#3)}
+\newcommand{\ifbt}[4]{\irl{if}[#1]\, (#2)\, (#3)\, (#4)}
+
+\newcommand{\pred}{\irl{pred}}
+\newcommand{\sub}{\irl{sub}}
+\newcommand{\leqf}{\irl{leq}}
+
+\newcommand{\option}[1]{#1~\irl{opt}}
+\newcommand{\none}{\irl{null}}
+\newcommand{\some}[1]{\irl{just}(#1)}
+
+\newcommand{\extend}{\irl{extend}}
+
+\newcommand{\fn}[3]{\lambda(#1:#2)~#3}
+\newcommand{\ap}[2]{#1(#2)}
+
+\newcommand{\lprodt}[1]{\langle #1\rangle}
+\newcommand{\lsumt}[1]{[#1]}
+\newcommand{\lpair}{\pair{l_1\hra e_1}{\dots,l_n\hra e_n}}
+\newcommand{\lpairprime}{\pair{l_1\hra e_1'}{\dots,l_n\hra e_n'}}
+\newcommand{\lprodtn}{\lprodt{l_1\hra\tau_1,\dots,l_n\hra\tau_n}}
+\newcommand{\lsumtn}{\lsumt{l_1\hra\tau_1,\dots,l_n\hra\tau_n}}
+\newcommand{\lprodn}{\lprodt{l_1\hra e_1,\dots,l_n\hra e_n}}
+\newcommand{\lsumn}{\lsumt{l_1\hra e_1,\dots,l_n\hra e_n}}
+
+
+\newcommand{\proj}[2]{#1\cdot#2}
+%\newcommand{\inj}[3]{\irl{in}[#1]\{#2\}(#3)}
+\newcommand{\inj}[3]{{#2}\cdot{#3}}
+
+\newcommand{\case}[2]{\irl{case}~#1~\irl{ of }~\{#2\}}
+\newcommand{\casen}{\case{e}{\inj{}{l_1}{x_1} \hra e_1\por \dots \por \inj{}{l_n}{x_n} \hra e_n}}
+
+\newcommand{\por}{\hspace*{.2em}|\hspace*{.2em}}
+\newcommand{\letbind}[3]{\irl{let}~#1~\irl{be}~#2~\irl{in}~#3}
+\newcommand{\match}[2]{\irl{match}~#1~\{#2\}}
+\newcommand{\npat}{l_1\cdot p_1\goesto e_1 \por \dots \por l_n\cdot p_n\goesto e_n}
+\newcommand{\nmatch}[1]{\match{#1}{\npat}}
+\newcommand{\alias}[2]{#1~@~#2}
+\newcommand{\transJ}[4]{#1\vdash#2:#3\leadsto#4}
+\newcommand{\transJC}[3]{\transJ{\Gamma}{#1}{#2}{#3}}
+\newcommand{\matchJC}[3]{#1:#2\leadsto{#3}}
+\newcommand{\matchSet}[2]{#1\implies#2}
+
+\newcommand{\emptycontext}[0]{\ensuremath{\cdot}}
+
+\newcommand{\defn}{\triangleq}
+
+\newcommand{\pimp}{\supset}
+
+\newcommand{\nmod}{~\mathtt{mod}~}
+\newcommand{\ndiv}{~\mathtt{div}~}
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+
+\newcommand{\problemset}[1]
+  {\ifthenelse{\equal{\issolution}{true}}
+  {}{{#1}}}
+
+\setcounter{taskcounter}{1}
+\setcounter{taskPercentCounter}{0}
+\setcounter{taskcounterSection}{\value{section}}
+
+%\newcommand{\ttt}[1]{\texttt{#1}}
+
+%% part of a problem
+\newcommand{\task}[1]
+  {\bigskip \noindent {\bf Task\mayresettaskcounter{}\addtocounter{taskPercentCounter}{#1} \arabic{section}.\arabic{taskcounter}\addtocounter{taskcounter}{1}} (#1).}
+
+\newcommand{\ectask}
+  {\bigskip \noindent {\bf Task\mayresettaskcounter{} \arabic{section}.\arabic{taskcounter}\addtocounter{taskcounter}{1}} (Extra Credit).}
+
+%% The rule counter
+\newcounter{rule}
+\setcounter{rule}{0}
+\newcommand{\rn}
+  {\addtocounter{rule}{1}(\arabic{rule})}
+
+
+\title{Assignment \#2: \\
+        System T with Labeled Sums and Products}
+
+\author{15-312: Principles of Programming Languages (Spring 2017)}
+\date{Out: Wednesday, February 8, 2017\\
+      Due: Thursday, February 22, 2017 11:59pm EST}
+
+\begin{document}
+\maketitle
+
+\section*{Introduction}
+
+In this assignment, we study System T with various additions,
+including labeled sums and products, and a reduced form of pattern
+matching. You find more background info
+for this assignment in the PFPL chapters 9 (System T), 10 (products),
+11 (sums).
+
+
+This assignment will likely take more time than the previous ones. You
+have two weeks. So start early and try to finish half of it in the
+first week.  Ask the TAs or instructors if you need help.
+
+
+\subsection*{Submission}
+
+As usual, please submit the written part of this homework before as a
+pdf file to Gradescope. To submit the implementation part, submit a
+\emph{tar file} to Autolab. To create the \emph{tar file} use the
+makefile we have supplied on the website. It will ensure that all the
+relevant files are handed in.
+
+\section{System T with Labeled Sums and Products}
+For this section of the assignment, we will be working on System T extended with labeled sum and product types as well as the always convenient let statement.
+\[
+\begin{array}{r l l l l}
+\ms{Type} & \tau \,\,\,\,\, ::= \\
+	& \irl{nat}                	 			& \irl{nat}											& \text{naturals}\\
+      	&\irl{arr}(\tau_1;\tau_2) 				& \parr{\tau_1}{\tau_2} 									& \text{function}\\
+        &\irl{prod}(l_1\hra\tau_1;\dots;l_n\hra\tau_n)		& \lprodtn											& \text{product}\\
+      	&\irl{sum}(l_1\hra\tau_1;\dots;l_n\hra\tau_n)		& \lsumtn											& \text{sum}\\
+	 \\
+\ms{Exp}
+        & e   \,\,\,\,\, ::= \\
+ 	& x                                			& x 												& \text{variable}\\
+        & \zero							& \zero												& \text{zero}\\
+        & \suc{e}                     				& \suc{e}											& \text{successor} \\
+        & \irl{rec}\{e_z;x.y.e_1\}(e)   			& \rec{e}{e_z}{x}{y}{e_1}									& \text{recursion}\\
+        & \lam\{\tau\}(x.e)           				& \fn{x}{\tau}{e}										& \text{abstraction} \\
+        & \irl{ap}(e_1;e_2) 					& \ap{e_1}{e_2} 										& \text{application}\\
+        & \irl{tpl}(l_1\hra e_1;\dots;l_n\hra e_n)     	& \lpair                									& \text{tuple}\\
+ 	& \irl{proj}[l](e)					& \proj{e}{l}   										& \text{projection}\\
+	& \irl{in}[l]\{\tau\}(e)				& \inj{\tau}{l}{e}      									& \text{injection}\\
+	& \irl{case}[l_1,\dots,l_n](x_1.e_1;\dots;x_n.e_n)(e) 	& \casen											& \text{casing}\\
+\end{array}
+\]
+In this grammar we have a new class of object: labels, represented by $l$ in the grammar. Labels are simply identifiers
+associated with elements of tuples and sums to give them some description and allow for a more intuitive elimination
+form.
+
+\paragraph{A note about variables:} If you compare the definition of
+abt's for expressions in System T with the abt's for decks with wild
+cards, you may notice that variables seem to be treated
+differently. The definition for cards that is used for decks with wild
+cards does not contain any operators for variables. Instead we rely on
+the abt framework to give meaning to variables (basically by using
+substitution as defined in PFPL).  By definition, a variable of the
+correct sort is an abt of that sort. However, in the previous
+definition of $\ms{Exp}$, there are variables $x$ mentioned alongside
+the operators that form expressions. If we were precise then we would
+need to remove the line for the variables as variables come \emph{for
+  free} as part of our abt framework. There are two reasons we usually
+add variables when (informally) defining abt's. First, this is in line
+with the programming language literature and will help you to read
+material from other sources. Second, it is a reminder
+that a variable is also a valid expression. \\[2\lineskip]
+
+You find a recap of the rules for the statics statics and dynamics in
+Sections~\ref{statics} and~\ref{dynamics} at the end of this handout.
+%
+To give meaning to our extensions, we add two new types, one for
+labeled product and one for labeled sums. The type $\lprodtn$ is a
+labeled product type whose component labeled $l_i$ has type $\tau_i$.
+Labeled producs are sometimes called records.
+The introduction form for labeled products has the form $\lprodn$
+whose $l_i$ component is $e_i$.  The projection $\proj{e}{l}$ selects
+the $l$ component of the labeled tuple $e$.
+\begin{mathpar}
+\small
+\inferrule{
+	\typeJC{e_1}{\tau_1}~\dots~\typeJC{e_n}{\tau_n}\\
+	\forall i\neq j.l_i\neq l_j
+}{
+	\typeJC{\lpair}{\lprodtn}
+}(\prodt{}\intro)
+
+\inferrule{
+	\typeJC{e}{\lprodtn}\\
+	(1\leq i\leq n)
+}{
+	\typeJC{\proj{e}{l_i}}{\tau_i}
+}(\prodt{}\elim)
+
+\inferrule{
+	\val{e_1}~\dots~\val{e_n}
+}{
+	\val{\lprodn}
+}(\irl{tuple}_\valrule)
+
+\inferrule{
+	\val{e_1}\dots \val{e_{i-1}}\\
+	\steps{e_i}{e_i'}\\
+}{
+	\steps{\lprodn}{\lprodt{l_1\hra e_1,\dots,l_i\hra e_i',\dots,l_n\hra e_n} }
+}(\irl{tuple}_\progrule)
+
+\inferrule{
+	\steps{e}{e'}
+}{
+	\steps{e.l_i\{\tau\}}{e'.l_i\{\tau\}}
+}(\irl{proj}_\progrule^1)
+
+\inferrule{
+	\val \lpair
+}{
+	\steps{\proj{\lprodn}{l_i}}{e_i}
+}(\irl{proj}_\progrule^2)
+
+\end{mathpar}
+
+The type
+$\lsumtn$ is the labeled sum type whose elements are elements of type $\tau_i$
+labeled with $l_i$, for some $1\leq i\leq n$. The injection
+$\irl{inj}\{\tau\}(l;e)$ creates a sum of type $\tau$ with $e$ at label $l$. $\casen$
+takes a sum and, if it is of form $\inj{\tau}{l_i}{e_i}$, binds the contents to $x_i$ in $e_i$.
+\begin{mathpar}
+\small
+\inferrule{
+	\typeJC{e}{\tau_i}\\
+	\forall i\neq j.l_i\neq l_j
+}{
+	\typeJC{\inj{}{l_i}{e}}{\lsumtn}
+} (\sumt{} \intro)
+
+\inferrule{
+	\typeJC{e}{\lsumtn}\\
+	\typeJ{\Gamma,\hasType{x_1}{\tau_1}}{e_1}{\tau}
+	~\dots~
+	\typeJ{\Gamma,\hasType{x_n}{\tau_n}}{e_n}{\tau}
+}{
+	\typeJC{\casen}{\tau}
+}(\sumt{} \elim)
+
+\inferrule{
+	\val{e}
+}{
+	\val{\inj{\tau}{l}{e}}
+}(\irl{inj}_\valrule)
+
+\inferrule{
+	\steps{e}{e'}
+}{
+	\steps{\inj{\tau}{l}{e}}{\inj{\tau}{l}{e'}}
+}(\irl{inj}_\progrule)
+
+\inferrule{
+	\steps{e}{e'}
+}{
+	\steps{\case{e}{l_1(x_1) \goesto e_1 \por \dots \por l_n(x_n)\goesto e_n}}{\case{e'}{l_1(x_1) \goesto e_1 \por \dots \por l_n(x_n)\goesto e_n}}
+}(\irl{case}_\progrule^1)
+
+\inferrule{
+	\val{\inj{}{l_i}{e}}
+}{
+	\steps{\case{\inj{\tau}{l_i}{e}}{l_1(x_1) \goesto e_1 \por \dots \por l_n(x_n)\goesto e_n}}
+		 {[e/x_i]e_i}
+}(\irl{case}_\progrule^2)
+
+\end{mathpar}
+
+\subsection{Properties of the Extended System T}
+
+We will begin by proving some important properties of our extended System T.
+
+\task{10}
+Prove the cases of the canonical forms lemma for System T pertaining to sums:\\[.5\baselineskip]
+%
+If $\val {e}$ and $\emptycontext \vdash e : \lsumtn$ then for some
+$1\leq i\leq n$, and some $e'$, $e=\inj{\lsumtn}{l_i}{e'}$ and
+$\emptycontext \vdash e' : \tau_i$.\\[.5\baselineskip]
+%
+Note that we write $\emptycontext$ for the empty context.
+
+
+\solution{canonical.tex}
+
+\task{10}
+Prove preservation for System T:\\[.5\baselineskip]
+%
+If $\emptycontext \vdash e : \tau$ and $\steps{e}{e'}$ then $\emptycontext \vdash e' : \tau$\\[.5\baselineskip]
+%
+You may restrict yourself to cases dealing with sum types. Those for
+$\irl{in}$ and $\irl{case}$. You may use any inversion lemmas without
+proof, as long as you \textbf{explictly state} the lemmas you are
+using.
+
+\solution{preservation.tex}
+
+\task{10}
+Prove progress for System T:\\[.5\baselineskip]
+If $\emptycontext \vdash e : \tau$ then either $\val{e}$ or there is some $e'$ such that $\steps{e}{e'}$\\[.5\baselineskip]
+%
+As before, prove only the new cases for sum. You may use any canonical
+forms lemmas without proof, as long as you \textbf{explictly state}
+the lemmas you are using.
+
+\solution{progress.tex}
+
+\subsection{Implementing System T}
+
+Your task in this section is to implement System T with labeled sums
+and products.
+
+\begin{itemize}
+\item The statics of System T, as defined in Sections \ref{tstatics} and \ref{prodstatics} of this handout.
+\item The dynamics of System T, as defined in Sections \ref{tdynamics} and \ref{proddynamics} of this handout.
+\end{itemize}
+
+Unlike the previous assignment our terms now contain syntactic
+elements of multiple sorts. The ABT interface that we developed in
+Assignment 1 only supports ABT's of a single sort. So we use a new
+interface for this assignment. In the file ``\texttt{labT/labT.sig}''
+of the distribute archive, you find the signature for the new
+structure. It may be helpful to also read
+``\texttt{labT/labT.abt}'' which defines the grammar of the language
+you will be implementing (you should note how it is closely related
+with the signature in ``\texttt{labT.sig}'').
+
+\task{20} Implement the statics of the language by completing the
+structure \verb|LabTChecker|, which can be found in
+``\verb|sec2/typechecker.sml|''. To this end, you need to implement
+the function \verb|checktype| which takes a context and an experssion
+(also called term) and returns the type of the expression under the
+context as defined by the type rules. If no such type exists then the
+function should raise a \verb|TypeError| exception.
+
+\task{20} Implement the dynamics of the language by completing the
+structure \verb|LabTDynamics|, which can be found in
+``\verb|sec2/uncheckeddynamics.sml|''. The specification is identical
+to the one for the unchecked dynamics on Assignment 1.  In particular,
+you need to implement the function \verb|trystep|,
+which can raise a \verb|Malformed| exception. \\
+
+In your implementations you are welcome to use any structures provided
+in ``\texttt{cmlib/}''. In particular it may be useful to read
+``\texttt{cmlib/dict.sig}'' and ``\texttt{cmlib/set.sig}''. Note that
+the exeption \verb|Abort| is used to signal a runtime error
+such as \emph{division by zero}. You can ignore it in this assignment
+but it may be used later in the class.\\
+
+You are expected to test your own code as the test suite we have provided is
+exceedingly un-comprehensive. The testing infrastructure has been slightly
+modified from the previous assignment (hopefully simplified). For examples on
+how to write tests refer to the files in \verb|sec2/tests|. To add your
+tests to the test suite refer to \verb|sec2/tests.sml|.
+
+
+\section{Pattern Matching}
+
+In this section we further extend System T + Labeled Types with a
+simple form of pattern matching.  We introduce two new constructs, one
+for matching values of nested labeled product type, and an enhanced
+form of case analysis that allows for nested product matching in the
+argument of an injection.  This is not quite the full power of pattern
+matching as found in ML (Why not?), but it is expressive enough to be
+useful and to illustrate the idea.
+
+\[
+\begin{array}{r l l l l l}
+\ms{Type}
+	&\tau \,\,\, ::=	\\
+        & \dots  \\
+\ms{Exp}
+        & e \,\,\, ::= \\
+        & \ldots \\
+        & \irl{match}[l_1,\dots,l_n](p_1.e_1;\dots; p_n.e_n)(e)  & \nmatch{e} & \text{matching}\\
+	& \irl{let}(e;p.e_1)			& \letbind{p}{e}{e_1}			& \text{binding}\\
+        \\
+\ms{Pattern}
+	& p \,\,\, ::= \\
+        &  \--						& \--						& \text{wildcard}\\
+	& x:\tau					& x:\tau					& \text{variable}\\
+	& \irl{as}(p,x:\tau) 			& \alias{p}{x:\tau} 			& \text{alias}\\
+	& \irl{tpl}[l_1,\dots,l_n](p_1;\dots;p_n)    & \pair{l_1\hra p_1}{\dots,l_n\hra p_n} 	& \text {tuple}
+\end{array}
+\]
+A $\irl{match}$ expression generalizes a $\irl{case}$ expression to admit patterns for the constructor arguments in each of
+the cases.  A $\irl{let}$ expression is generalized to allow nested product patterns, rather than just a variable.
+
+\subsection{Statics}
+The statics of $\irl{match}$ and $\irl{let}$ must account for the use of product patterns in $\irl{match}$ and
+$\irl{let}$ expressions.  A base case of a pattern is a variable equipped with its type; any such variable is bound at
+the point of its occurrence.  Another base case is the wild card pattern, written as a dash, that matches anything, and
+does not bind anything.  An iterated pattern $\alias{p}{x:\tau}$ binds a variable $x$, and also the variables in the provided pattern $p$.  This
+allows to give a name to a tuple, and also name its components, in a single pattern.  Finally, a tuple pattern binds the
+variables in the patterns provided.  No variable may be bound more than once in a tuple pattern.  Thus, for example, the
+pattern $\pair{l\hra\pair{ll\hra x:\natt}{lr\hra\--}}{r\hra y:\natt}$ binds two variables, both of type $\natt$, and
+matches a pair consisting of a pair of a natural number and another value and a natural number.
+
+Because a pattern binds many variables at once, we define an auxiliary judgment $\matchJC{p}{\tau}{\Gamma}$ that extracts a
+context $\Gamma$ from $p$ which matches type $\tau$:
+\begin{mathpar}
+\small
+\inferrule{
+}{
+	\matchJC{(\--:\tau)}{\tau}{\emptycontext}
+}(M_{\--})
+
+\inferrule{
+}{
+	\matchJC{(x:\tau)}{\tau}{\{\hasType{x}{\tau}\}}
+}(M_{x})
+
+\inferrule{
+	\matchJC{p}{\tau}{\Gamma}
+}{
+	\matchJC{(\alias{p}{x})}{\tau}{\Gamma,\hasType{x}{\tau}}
+}(M_{\irl{as}})
+
+\inferrule{
+	\matchJC{p_1}{\tau_1}{\Gamma_1}~\dots~\matchJC{p_n}{\tau_n}{\Gamma_n}\\
+	\Gamma'=\Gamma_1,\ldots,\Gamma_n
+}{
+	\matchJC{\pair{l_1 \hra p_1}{\dots,l_n \hra p_n}}{\lprodtn}{\Gamma'}
+}(M_{\irl{tuple}})
+\end{mathpar}
+This disjoint union of contexts, written with a comma as in $\Gamma_1,\Gamma_2$, is undefined if any variable is declared in both sides.  This expresses the
+requirement that tuple patterns not bind the same variable more than once.
+
+Now we have the tools we need to define the statics for match and let.
+\begin{mathpar}
+\small
+\inferrule{
+	\typeJC{e}{\lsumtn}\\
+	\matchJC{p_1}{\tau_1}{\Gamma_1}~\cdots~\matchJC{p_n}{\tau_n}{\Gamma_n}\\
+	\typeJ{\Gamma,\Gamma_1}{e_1}{\tau}~\cdots~\typeJ{\Gamma,\Gamma_n}{e_n}{\tau}
+}{
+	\typeJC{\nmatch{e}}{\tau}
+}(\irl{match})
+
+\inferrule{
+	\typeJC{e}{\tau'}\\
+	\matchJC{p}{\tau'}{\Gamma'}\\
+	\typeJ{\Gamma,\Gamma'}{e_1}{\tau}
+}{
+	\typeJC{\letbind{p}{e}{e_1}}{\tau}
+}(\irl{let})
+\end{mathpar}
+
+\subsection{Dynamics}
+The dynamics for match do not require any auxiliary judgements. In Task 3.1 you are asked to write the rules. There are some things to bear in mind.
+\begin{itemize}
+\item We can think of a tuple $\lpair$ as a set, so we can rearrange the labels however we want. Therefore you can assume the order of labels is whatever manner is most convenient. Perhaps that both sides match.
+\item We want the dynamics defined such that the pattern and the expression have the same labels, albeit not necessarily in the same order.
+\end{itemize} One rule is provided for you:
+\begin{mathpar}
+\inferrule{
+	\val{e}
+}{
+	\steps{\letbind{\alias{p}{x}}{e}{e_1}}{\letbind{p}{e}{\subst{e}{x}{e_1}}}
+}(\irl{let}_\progrule^1)
+\end{mathpar}\\
+\task{20}
+Define the dynamics for match.\\
+\textbf{Hint.}     For the tuple cases, think about breaking the match up into smaller pieces
+\solution{matchdynamics.tex}
+
+
+\subsection{Implementation}
+\task{15} Implement the statics  of this language using the rules
+you've defined above. You will need to implement that same structures as in the
+previous section, but in the \verb|sec3| directory.
+
+\task{15}
+Implement the dynamics of this language using the rules
+you've defined above. You will need to implement that same structures as in the
+previous section, but in the \verb|sec3| directory.
+
+\section{Translation}
+When making a compiler for say, SML, the writers will often create what are
+called ``Intermediate Representations''. The idea is to take a language with
+a complex set of features and progressively translate it into simpler and
+simpler languages. For a compiler this chain of representations eventually leads
+to ``assembly'' language.  This exercise will give you practice writing one of
+these translations. Now that you've implemented System T with and without
+patterns, you will now write
+a translation between the two. Specifically  you will be translating the
+language with patterns to the language without patterns.
+
+
+We begin by introducing a new judgement to guide our translation.
+\begin{mathpar}
+\inferrule{
+}{
+  \zero \leadsto \zero
+}(T_{\zero})
+
+\inferrule{
+  n \leadsto n'
+}{
+    \suc{n} \leadsto \suc{n'}
+}(T_{\irl{succ}})
+
+\inferrule{
+}{
+   x \leadsto x
+}(T_{\irl{var}})
+
+\inferrule{
+    \tau \leadsto \tau' \\
+    e \leadsto e'
+}{
+    \fn{x}{\tau}{e} \leadsto \fn{x}{\tau'}{e'}
+}(T_{\irl{lam}})
+
+\inferrule{
+    e_1 \leadsto e_1' \\
+    e_2 \leadsto e_2'
+}{
+    \ap{e_1}{e_2} \leadsto \ap{e_1'}{e_2'}
+}(T_{\irl{app}})
+
+\inferrule{
+    e_1 \leadsto e_1' \\
+    \ldots  \\
+    e_n \leadsto e_n'
+}{
+    \lpair \leadsto \lpairprime
+}(T_{\irl{pair}})
+
+\inferrule{
+    e \leadsto e' \\
+}{
+    \inj{}{e}{l}  \leadsto \inj{}{e'}{l}
+}(T_{\irl{inj}})
+
+\inferrule{
+    n \leadsto n' \\
+    e_z \leadsto e_z' \\
+    e_s \leadsto e_s'
+}{
+    \rec{n}{e_z}{x}{y}{e_s} \leadsto
+    \rec{n'}{e_z'}{x}{y}{e_s'}
+}(T_{\irl{inj}})
+
+\inferrule{
+}{
+    \natt \leadsto \natt
+}(T_{\natt})
+
+\inferrule{
+    \tau_1 \leadsto \tau_1' \\
+    \tau_2 \leadsto \tau_2'
+}{
+    \parr{\tau_1}{\tau_2} \leadsto \parr{\tau_1'}{\tau_2'}
+}(T_{\irl{arr}})
+
+\inferrule{
+  \tau_1 \leadsto \tau_1' \\
+  \ldots \\
+  \tau_n \leadsto \tau_n'
+}{
+   \lprodtn \leadsto
+   \lprodt{l_1\hra\tau_1',\dots,l_n\hra\tau_n'}
+}(T_{\irl{prod}})
+
+\inferrule{
+  \tau_1 \leadsto \tau_1' \\
+  \ldots \\
+  \tau_n \leadsto \tau_n'
+}{
+   \lsumtn \leadsto
+   \lsumt{l_1\hra\tau_1',\dots,l_n\hra\tau_n'}
+}(T_{\irl{sum}})
+\end{mathpar}
+
+\task{20}
+Define the translation for the let and match cases.\\
+\textbf{Hint.} Try tackling each of the pattern cases one at a time.
+
+\solution{translation.tex}
+
+\subsection{Implementation}
+\task{20}
+Implement the translation using the rules you've defined above. You will need to
+implement the \verb|Translation| structure defined in
+\verb|trans/translation.sml|.
+
+To test you code you will write \verb|MatchT| programs in the \verb|tests|
+subdirectory and specify the expected \verb|LabT| results. For examples please
+refer to \verb|trans/tests.sml|.
+
+\section{System T DB}
+In this exercise we will go webscale. Bob, Jan and the TA crew want to disrupt the database industry with their system T databases. With their sum and product types in hand they set off designing the latest in DB technology. Many pieces of expensive Japanese chalk later, they have made little progress and need to enlist your help.
+
+\subsection{The Design}
+So far the course staff knows that their database will be a finite set of rows where each \empty{row} is a product with $n$ fields where a field is a named string or nat. We will call the finite set of rows a \emph{table} and a table will be a pair of its length and a function which maps row numbers to the corresponding rows.
+
+They test their design by implementing a database that contains the
+grades for 312.  The database contains two tables. The first table is
+called \emph{students} and has two fields of type string for the
+Andrew ID and name of the student. The second table is called
+\emph{points} and has three fields of type string, nat, and nat. The
+first field is for the Andrew ID, the second field is for the
+assignment number, and the third field is for the points on that
+assignment.
+%
+Like in standard database systems, we also allow fields of a row to be
+missing, which is expressed by $\none$.  Such missing values pose a
+challenge in rational databases
+(see \url{http://en.wikipedia.org/wiki/Null_(SQL)}).
+
+\subsection{But First, Some Helpful Types}
+Recall from lecture, that we introduce abbreviations to make types
+more readable.
+Booleans are simply enumerables
+with two possible values:
+$$\lsumt{\true \hra \unit, \false \hra \unit}$$
+%
+A conditional is then of type $\irl{if}[\tau] : \parr{\bool}{\parr{\tau}{\parr{\tau}{\tau}}}$ and
+defined as follows:
+$$
+\irl{if}[\tau] \defn
+\fn{b}{\bool}{
+  \fn{t}{\tau}{
+    \fn{f}{\tau}{
+      \case{b}{\true \cdot x_t \hra t, \false \cdot x_f  \hra f}}}}
+$$
+Notice that we parameterize conditionals on a type $\tau$ so that we do not have to reimplement the function for all types. \\ \\
+
+Next we will model strings in System T with sums and products. We decide
+to model strings as functions of type $\parr{\irl{nat}}{(\option{\irl{nat}})}$.
+$$
+\stringt \,\, = \,\, \parr{\irl{nat}}{(\option{\irl{nat}})}
+$$
+The idea is that to encode a string $s_1,\ldots,s_n$ (where $s_i$ is a
+natural number) with a function
+$s : \parr{\irl{nat}}{(\option{\irl{nat}})}$ such that
+$\ap{s}{i} = \some{s_i}$ for $i \leq n$ and $\ap{s}{i} = \none$ for
+$i \geq n$. Like in lecture we write $\option{\tau}$
+for $\lsumt{l\hra\unitt,r\hra\tau}$, $\some{e}$ for $\inj{\tau}{r}{e}$,
+and $\none$ for $\inj{\tau}{l}{\unit}$.
+
+The course staff has already implemented equality functions for
+Booleans and natural numbers that you can use in your implementation.
+$$
+\begin{array}{rll}
+  \verb|eq_nat| &:& \parr{\irl{nat}}{\parr{\irl{nat}}{\irl{bool}}} \\
+  \verb|eq_string| &:& \parr{\irl{string}}{\parr{\irl{string}}{\irl{bool}}}
+\end{array}
+$$
+
+\task{5}
+Encode the UTF string ``I$\heartsuit$T'' in System T. You can use natural number constants.
+For example, you can write $3$ instead of $\suc{\suc{\suc{\zero}}}$.\\
+
+\solution{str.tex}
+
+\task{10}
+Implement a function
+$$
+ \irl{concat} : \parr{\stringt}{\parr{\stringt}{\stringt}}
+$$
+in System T with sums and products that concatenates two strings. You
+can use the function
+$\irl{minus} : \parr{\irl{nat}}{\parr{\irl{nat}}{\irl{nat}}}$ that
+implements the usual subtraction for natural number
+($\irl{minus} \,\, n_1 \,\, n_2 \equiv \max(n_1 - n_2,0)$). Moreover,
+you can assume that strings are always well-formed as specified before.\\
+
+\solution{concat.tex}
+
+\subsection{What's a Table}
+
+A table type $\tablet{\tau}$ is specified by a product type
+$\tau = \lprodtn$ for the rows of the table that specifies the fields
+$l_1,\ldots,l_n$. A table $t$ is modeled by a function whose arguments
+are the natural numbers so that $\ap{t}{n}$ returns the $n$th
+row. Like for strings, we have
+$\ap{t}{n} = \none$ for $n \geq N$, where $N$ is
+the number for rows in the tables. In contrast to strings, we also allow empty rows and return
+$\ap{t}{n} = \none$ if row $n$ is empty. To determine the end of the table,
+we also keep track of the number of rows $N$ (the size of the table).
+Below are the types for our example database for students and points.
+%
+$$
+\begin{array}{rll}
+\\
+\tablet{\tau} & = &
+\lprodt{\text{size}\hra\natt
+  ,\text{f}\hra\parr{\irl{nat}}{(\option{\tau})}}
+\\
+\irl{row}_\text{stu} & = &
+\lprodt{\text{ids}\hra\stringt,\text{nam}\hra\stringt}
+\\
+\irl{row}_\text{pts} & = &
+\lprodt{\text{idp}\hra\stringt,\text{ass}\hra \option{\irl{nat}},\text{pts}\hra\option{\irl{nat}}}
+\\
+\irl{table}_\text{stu} & = & \tablet{\irl{row}_\text{stu}}
+\\
+\irl{table}_\text{pts} & = & \tablet{\irl{row}_\text{pts}}
+\end{array}
+$$
+
+\subsection{Building on this Design}
+Now that they have a design they are happy with, the crew needs your help implementing all their database operations.
+
+\task{15} Implement the following functions for the database.
+$$
+\begin{array}{rll}
+  \verb|empty| & : & \parr{\unitt}{\irl{table}_\text{pts}}  \\
+  \verb|addRow| & : & \parr{\irl{table}_\text{pts}}
+{\parr{\irl{row}_\text{pts}}{\irl{table}_\text{pts}}} \\
+  \verb|mapRows| & : & \parr{\irl{table}_\text{pts}}
+{\parr{(\parr{\irl{row}_\text{pts}}{\option{\irl{row}_\text{pts}}})}
+{\irl{table}_\text{pts}}} \\
+  \verb|filterRows| & : & \parr{\irl{table}_\text{pts}}
+{\parr{(\parr{\irl{row}_\text{pts}}{\irl{bool}})}
+{\irl{table}_\text{pts}}} \\
+  \verb|addPoints| & : & \parr{\irl{table}_\text{pts}}
+{\parr{\stringt}
+{\parr{\irl{nat}}
+{\parr{\irl{nat}}{\irl{table}_\text{pts}}}}}
+\end{array}
+$$
+The function \verb|empty| returns the empty table, that is, the table
+with $0$ rows. The function \verb|addRow| adds an additional row to
+the database. For convenience we will say it is always okay to add a
+new row to the end of the table and increase its size.
+The function \verb|mapRows| is a map function for tables. The argument of type
+$\parr{\irl{row}_\text{pts}}{\option{\irl{row}_\text{pts}}}$ returns
+$\none$ to delete the respective row. The function \verb|filterRows|
+removes all rows r for which the argument of type
+$\parr{\irl{row}_\text{pts}}{\irl{bool}}$ evaluates to
+$\false$. Finally, \verb|addPoints| takes an Andrew ID, a problem set
+number and additional points to add to the existing
+points for that student's problem. It is up to you to decide what to do in case where
+the existing values are $\none$.
+
+\solution{dbfuncs.tex}
+
+\task{10}
+%
+Implement a join operation along the Andrew ID for tables of
+$\irl{table}_\text{stu}$ and $\irl{table}_\text{pts}$:
+$$
+\verb|join| : \parr{\irl{table}_\text{stu}}{\parr{\irl{table}_\text{pts}}
+{\irl{table}(\lprodt{\text{id}\hra\stringt,\text{na}\hra\stringt,\text{as}\hra\option{\irl{nat}},\text{pt}\hra\option{\irl{nat}}})}}
+$$
+You need to implement the usual semantics of join used in DB systems.
+That is the result of $\irl{join} t1 t2$ should be a table such that
+for every row, $\lprodt{ids \hra a, nam \hra n}$ in $t1$, and for every row
+$\lprodt{idp \hra a', ass \hra x, pts \hra y}$ in $t2$, if $a = a'$ then
+$\lprodt{id \hra a, na \hra n, ass \hra x, pts \hra y}$ should appear in the resulting
+table. Note, you cannot assume that the student IDs in the student table are
+unique. It might be helpful to implement a few helper functions to help you define join.
+
+\solution{join.tex}
+
+% \task{10}
+
+% What is the asymptotic complexity of the functions you implemented?
+% Informally describe a strategy to make functions \verb|getRow| and
+% \verb|updetRows| faster.
+
+\section{Statics}\label{statics}
+
+\subsection{System T}\label{tstatics}
+\begin{mathpar}
+\small
+\inferrule{
+ }{\typeJ{\Gamma,x:\tau}{x}{\tau}} (\text{var})
+
+\inferrule{ }{\typeJC{\zero}{\natt}} (\natt\intro_1)
+
+\inferrule{
+\typeJC{e}{\natt}
+}{
+\typeJC{\suc{e}}{\natt}
+} (\natt\intro_2)
+
+\inferrule{
+\typeJC{e}{\natt}\\
+\typeJC{e_z}{\tau}\\
+\typeJ{\ctx, \hasType{x}{\natt},\hasType{y}{\tau}}{e_1}{\tau}
+}{
+\typeJC{\rec{e}{e_z}{x}{y}{e_1}}{\tau}
+} (\irl{rec})
+
+\inferrule{
+\typeJ{\ctx, \hasType{x}{\tau_1}}{e}{\tau_2}
+}{
+\typeJC{\lam\{\tau_1\}(x.e)}{\parr{\tau_1}{\tau_2}}
+} (\parr{}{}\intro)
+
+\inferrule{
+\typeJC{e_1}{\parr{\tau_1}{\tau_2}}\\
+\typeJC{e_2}{\tau_1}
+}{
+\typeJC{\ap{e_1}{e_2}}{\tau_2}
+} (\parr{}{}\elim)
+
+\end{mathpar}
+
+\subsection{Labeled Sums and Products}\label{prodstatics}
+\begin{mathpar}
+\small
+\inferrule{
+	\typeJC{e_1}{\tau_1}~\dots~\typeJC{e_n}{\tau_n}\\
+	\forall i\neq j.l_i\neq l_j
+}{
+	\typeJC{\lpair}{\lprodtn}
+}(\prodt{}\intro)
+
+\inferrule{
+	\typeJC{e}{\lprodtn}\\
+	(1\leq i\leq n)
+}{
+	\typeJC{\proj{e}{l_i}}{\tau_i}
+}(\prodt{}\elim)
+
+\inferrule{
+	\typeJC{e}{\tau_i}\\
+	\forall i\neq j.l_i\neq l_j
+}{
+	\typeJC{\inj{}{l_i}{e}}{\lsumtn}
+} (\sumt{} \intro)
+
+\inferrule{
+	\typeJC{e}{\lsumtn}\\
+	\typeJ{\Gamma,\hasType{x_1}{\tau_1}}{e_1}{\tau}
+	~\dots~
+	\typeJ{\Gamma,\hasType{x_n}{\tau_n}}{e_n}{\tau}
+}{
+	\typeJC{\casen}{\tau}
+}(\sumt{} \elim)
+
+\end{mathpar}
+\newpage
+\section{Dynamics (Eager, Left-to-Right)}\label{dynamics}
+
+\subsection{System T}\label{tdynamics}
+\begin{mathpar}
+\small
+\inferrule{ }{\val{\zero}} (\natt_\valrule^1)
+
+\inferrule{
+  \val{e}
+}{
+  \val{\suc{e}}
+} (\natt_\valrule^2)
+
+\inferrule{ }{\val{\lam[\tau](x.e)}} (\parr{}{}_\valrule)
+
+\inferrule{
+   \steps{e}{e'}
+}{
+   \steps{\suc{e}}{\suc{e'}}
+} (\natt_\progrule)
+
+\inferrule{
+   \steps{e_1}{e_1'}
+}{
+   \steps{e_1~e_2}{e_1'~e_2}
+} (\text{ap}_\progrule^1)
+
+\inferrule{
+  \val{e_1}\\
+  \steps{e_2}{e_2'}
+}{
+   \steps{e_1~e_2}{e_1~e_2'}
+} (\text{ap}_\progrule^2)
+
+\inferrule{\val{e_2}}
+{
+\steps{\lam[\tau](x.e)~e_2}{[e_2/x]e}
+} (\text{ap}_\elimrule)
+
+\inferrule{\steps{e}{e'}}{\steps{\rec{e}{e_z}{x}{y}{e_1}}{\rec{e'}{e_z}{x}{y}{e_1}}}(\irl{rec}_\progrule^1)
+
+\inferrule{\strut }{\steps{\rec{\zero}{e_z}{x}{y}{e_1}}{e_z}}(\zero)(\irl{rec}_\progrule^2)
+
+\inferrule{ \val{e}}{\steps{\rec{\suc e}{e_z}{x}{y}{e_1}}{[e,\rec{e}{e_z}{x}{y}{e_1}/x,y]e_1}}(\irl{rec}_\progrule^3)
+\end{mathpar}
+
+\subsection{Labeled Products and Sums}\label{proddynamics}
+\begin{mathpar}
+\small
+
+\inferrule{
+	\val{e}
+}{
+	\val{\inj{\tau}{l}{e}}
+}(\irl{inj}_\valrule)
+
+\inferrule{
+	\steps{e}{e'}
+}{
+	\steps{\inj{\tau}{l}{e}}{\inj{\tau}{l}{e'}}
+}(\irl{inj}_\progrule)
+
+\inferrule{
+	\steps{e}{e'}
+}{
+	\steps{\case{e}{l_1(x_1) \goesto e_1 \por \dots \por l_n(x_n)\goesto e_n}}{\case{e'}{l_1(x_1) \goesto e_1 \por \dots \por l_n(x_n)\goesto e_n}}
+}(\irl{case}_\progrule^1)
+
+\inferrule{
+	\val{\inj{}{l_i}{e}}
+}{
+	\steps{\case{\inj{\tau}{l_i}{e}}{l_1(x_1) \goesto e_1 \por \dots \por l_n(x_n)\goesto e_n}}
+		 {[e/x_i]e_i}
+}(\irl{case}_\progrule^2)
+
+\inferrule{
+	\val{e_1}~\dots~\val{e_n}
+}{
+	\val{\lprodn}
+}(\irl{tuple}_\valrule)
+
+\inferrule{
+	\val{e_1}\dots \val{e_{i-1}}\\
+	\steps{e_i}{e_i'}\\
+}{
+	\steps{\lprodn}{\lprodt{l_1\hra e_1,\dots,l_i\hra e_i',\dots,l_n\hra e_n} }
+}(\irl{tuple}_\progrule)
+
+\inferrule{
+	\steps{e}{e'}
+}{
+	\steps{e.l_i\{\tau\}}{e'.l_i\{\tau\}}
+}(\irl{proj}_\progrule^1)
+
+\inferrule{
+	\val \lpair
+}{
+	\steps{\proj{\lprodn}{l_i}}{e_i}
+}(\irl{proj}_\progrule^2)
+
+\end{mathpar}
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% mode: flyspell
+%%% TeX-master: t
+%%% End:

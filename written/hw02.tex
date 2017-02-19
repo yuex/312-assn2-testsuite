@@ -13,6 +13,7 @@
 
 \input{generic-defns}
 \input{syn-defns}
+\input{syn-assn2}
 
 % =========================================================================== %
 %                                                                             %
@@ -68,11 +69,104 @@
 
 \task
 
+\begin{mathpar}
+\inferrule{
+    \val{e}
+}{
+    \steps{\letbind{\alias{p}{x}}{e}{e_1}}{\letbind{p}{e}{\subst{e}{x}{e_1}}}
+}(\irl{let}_\progrule^1)
+\end{mathpar}\\
+
 % TODO: Fill me in
 
 \nextgroup
 
 \task
+
+\begin{mathpar}
+\inferrule{
+}{
+  \zero \leadsto \zero
+}(T_{\zero})
+
+\inferrule{
+  n \leadsto n'
+}{
+    \suc{n} \leadsto \suc{n'}
+}(T_{\irl{succ}})
+
+\inferrule{
+}{
+   x \leadsto x
+}(T_{\irl{var}})
+
+\inferrule{
+    \tau \leadsto \tau' \\
+    e \leadsto e'
+}{
+    \fn{x}{\tau}{e} \leadsto \fn{x}{\tau'}{e'}
+}(T_{\irl{lam}})
+
+\inferrule{
+    e_1 \leadsto e_1' \\
+    e_2 \leadsto e_2'
+}{
+    \ap{e_1}{e_2} \leadsto \ap{e_1'}{e_2'}
+}(T_{\irl{app}})
+
+\inferrule{
+    e_1 \leadsto e_1' \\
+    \ldots  \\
+    e_n \leadsto e_n'
+}{
+    \lpair \leadsto \lpairprime
+}(T_{\irl{pair}})
+
+\inferrule{
+    e \leadsto e' \\
+}{
+    \inj{}{e}{l}  \leadsto \inj{}{e'}{l}
+}(T_{\irl{inj}})
+
+\inferrule{
+    n \leadsto n' \\
+    e_z \leadsto e_z' \\
+    e_s \leadsto e_s'
+}{
+    \rec{n}{e_z}{x}{y}{e_s} \leadsto
+    \rec{n'}{e_z'}{x}{y}{e_s'}
+}(T_{\irl{inj}})
+
+\inferrule{
+}{
+    \natt \leadsto \natt
+}(T_{\natt})
+
+\inferrule{
+    \tau_1 \leadsto \tau_1' \\
+    \tau_2 \leadsto \tau_2'
+}{
+    \parr{\tau_1}{\tau_2} \leadsto \parr{\tau_1'}{\tau_2'}
+}(T_{\irl{arr}})
+
+\inferrule{
+  \tau_1 \leadsto \tau_1' \\
+  \ldots \\
+  \tau_n \leadsto \tau_n'
+}{
+   \lprodtn \leadsto
+   \lprodt{l_1\hra\tau_1',\dots,l_n\hra\tau_n'}
+}(T_{\irl{prod}})
+
+\inferrule{
+  \tau_1 \leadsto \tau_1' \\
+  \ldots \\
+  \tau_n \leadsto \tau_n'
+}{
+   \lsumtn \leadsto
+   \lsumt{l_1\hra\tau_1',\dots,l_n\hra\tau_n'}
+}(T_{\irl{sum}})
+\end{mathpar}
 
 % TODO: Fill me in
 

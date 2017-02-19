@@ -1,0 +1,106 @@
+\newcommand{\qbox}{\fbox{???}}
+
+\newcommand{\ms}[1]{\ensuremath{\mathsf{#1}}}
+\newcommand{\irl}[1]{\mathtt{#1}}
+
+\newcommand{\wildcard}{\ensuremath{\_}}
+\newcommand{\lam}{\irl{lam}}
+\newcommand{\fix}{\irl{fix}}
+\newcommand{\parr}[2]{#1 \to #2}
+\newcommand{\arr}[2]{#1\to #2}
+\newcommand{\pair}[2]{\langle #1, #2 \rangle}
+
+\newcommand{\unit}[0]{\left<\right>}
+\newcommand{\unitt}[0]{\irl{unit}}
+\newcommand{\stringt}[0]{\irl{string}}
+\newcommand{\tablet}[1]{\irl{table}(#1)}
+
+\newcommand{\natt}{\irl{nat}}
+\newcommand{\prodt}[2]{#1\times#2}
+\newcommand{\voidt}{\irl{void}}
+\newcommand{\sumt}[2]{#1 + #2}
+
+\newcommand{\intro}{\text{-I}}
+\newcommand{\elim}{\text{-E}}
+
+\newcommand{\val}[1]{#1~\textsf{val}}
+\newcommand{\abst}[2]{#1.#2}
+\newcommand{\steps}[2]{#1 \mapsto #2}
+\newcommand{\subst}[3]{[#1/#2]#3}
+\newcommand{\err}[1]{#1~\textsf{err}}
+
+\newcommand{\goesto}{\hookrightarrow}
+\newcommand{\hra}{\hookrightarrow}
+
+\newcommand{\proves}{\vdash}
+\newcommand{\hasType}[2]{#1 : #2}
+\newcommand{\typeJ}[3]{#1 \proves \hasType{#2}{#3}}
+\newcommand{\ctx}{\Gamma}
+\newcommand{\emptyCtx}{\emptyset}
+\newcommand{\xCtx}[2]{\ctx, \hasType{#1}{#2}}
+\newcommand{\typeJC}[2]{\typeJ{\ctx}{#1}{#2}}
+
+\newcommand{\valrule}{\textsf{v}}
+\newcommand{\progrule}{\textsf{s}}
+\newcommand{\elimrule}{\textsf{e}}
+
+\newcommand{\zero}{\irl{z}}
+\newcommand{\suc}[1]{\irl{s}(#1)}
+\newcommand{\rec}[5]{\irl{rec}\{z \goesto #2 \por \suc{#3} ~\irl{with}~#4 \goesto #5\}(#1)}
+
+
+\newcommand{\bool}{\irl{bool}}
+\newcommand{\true}{\irl{true}}
+\newcommand{\false}{\irl{false}}
+\newcommand{\ifb}[3]{\irl{if}(#1;#2;#3)}
+\newcommand{\ifbt}[4]{\irl{if}[#1]\, (#2)\, (#3)\, (#4)}
+
+\newcommand{\pred}{\irl{pred}}
+\newcommand{\sub}{\irl{sub}}
+\newcommand{\leqf}{\irl{leq}}
+
+\newcommand{\option}[1]{#1~\irl{opt}}
+\newcommand{\none}{\irl{null}}
+\newcommand{\some}[1]{\irl{just}(#1)}
+
+\newcommand{\extend}{\irl{extend}}
+
+\newcommand{\fn}[3]{\lambda(#1:#2)~#3}
+\newcommand{\ap}[2]{#1(#2)}
+
+\newcommand{\lprodt}[1]{\langle #1\rangle}
+\newcommand{\lsumt}[1]{[#1]}
+\newcommand{\lpair}{\pair{l_1\hra e_1}{\dots,l_n\hra e_n}}
+\newcommand{\lpairprime}{\pair{l_1\hra e_1'}{\dots,l_n\hra e_n'}}
+\newcommand{\lprodtn}{\lprodt{l_1\hra\tau_1,\dots,l_n\hra\tau_n}}
+\newcommand{\lsumtn}{\lsumt{l_1\hra\tau_1,\dots,l_n\hra\tau_n}}
+\newcommand{\lprodn}{\lprodt{l_1\hra e_1,\dots,l_n\hra e_n}}
+\newcommand{\lsumn}{\lsumt{l_1\hra e_1,\dots,l_n\hra e_n}}
+
+
+\newcommand{\proj}[2]{#1\cdot#2}
+%\newcommand{\inj}[3]{\irl{in}[#1]\{#2\}(#3)}
+\newcommand{\inj}[3]{{#2}\cdot{#3}}
+
+\newcommand{\case}[2]{\irl{case}~#1~\irl{ of }~\{#2\}}
+\newcommand{\casen}{\case{e}{\inj{}{l_1}{x_1} \hra e_1\por \dots \por \inj{}{l_n}{x_n} \hra e_n}}
+
+\newcommand{\por}{\hspace*{.2em}|\hspace*{.2em}}
+\newcommand{\letbind}[3]{\irl{let}~#1~\irl{be}~#2~\irl{in}~#3}
+\newcommand{\match}[2]{\irl{match}~#1~\{#2\}}
+\newcommand{\npat}{l_1\cdot p_1\goesto e_1 \por \dots \por l_n\cdot p_n\goesto e_n}
+\newcommand{\nmatch}[1]{\match{#1}{\npat}}
+\newcommand{\alias}[2]{#1~@~#2}
+\newcommand{\transJ}[4]{#1\vdash#2:#3\leadsto#4}
+\newcommand{\transJC}[3]{\transJ{\Gamma}{#1}{#2}{#3}}
+\newcommand{\matchJC}[3]{#1:#2\leadsto{#3}}
+\newcommand{\matchSet}[2]{#1\implies#2}
+
+\newcommand{\emptycontext}[0]{\ensuremath{\cdot}}
+
+\newcommand{\defn}{\triangleq}
+
+\newcommand{\pimp}{\supset}
+
+\newcommand{\nmod}{~\mathtt{mod}~}
+\newcommand{\ndiv}{~\mathtt{div}~}
