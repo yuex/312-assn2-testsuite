@@ -1,0 +1,201 @@
+% generic definitions
+
+%\DeclareMathAccent{\colonaccent}{\mathpunct}{upright}{"3A}
+
+% create a wavy division sign
+\stackMath
+\def\ccdot{\scalebox{1.15}{$\SavedStyle\cdot$}}
+\def\genericform#1#2{\stackunder[#1]{\stackon[#2]{\SavedStyle\sim}{\ccdot}}{\ccdot}}
+\def\altdiv{\mathrel{\ThisStyle{\mathchoice%
+  {\genericform{-2.5pt}{-1.5pt}}%
+  {\genericform{-2.5pt}{-1.5pt}}%
+  {\genericform{-2.0pt}{-1.1pt}}%
+  {\genericform{-1.4pt}{-0.8pt}}%
+}}}
+
+\newcommand{\optional}[1]{\lbrack #1\rbrack}
+
+\newcommand{\VisibleSpace}{\mbox{\verb*/ /}}
+
+\newcommand{\Domain}[1]{\mathop{\mathit{dom}}(#1)}
+\newcommand{\Disjoint}[2]{{#1}\mathrel{\#}{#2}}
+\newcommand{\NotInDom}[2]{#1\notin\Domain{#2}}
+\newcommand{\NotIn}[2]{{#1}\notin{#2}}
+\newcommand{\eqdef}{\mathrel{\triangleq}}
+\newcommand{\isdef}{\eqdef}
+
+\newcommand{\bnfdef}{\coloncolonequals}
+\newcommand{\phantombnfdef}{\mathrel{\phantom{\bnfdef}}}
+\newcommand{\bnfalt}{\mathrel{\mid}}
+
+\newcommand{\pto}{\rightharpoonup}
+\newcommand{\backsl}{\ensuremath{\backslash}}
+\newcommand{\turnstile}{\ensuremath{\vdash}}
+\newcommand{\twiddle}{\raisebox{-.1\height}{\texttildelow}}
+%\newcommand{\twiddle}{\ensuremath{\tilde{\ }}}
+\newcommand{\caret}{\ensuremath{\hat{\ }}}
+
+\newcommand{\parens}[1]{({#1})}
+\newcommand{\braces}[1]{\{{#1}\}}
+\newcommand{\sqbracks}[1]{[{#1}]}
+\newcommand{\ptbracks}[1]{\langle #1\rangle}
+\newcommand{\brackets}[1]{\ptbracks{#1}}
+\newcommand{\corners}[1]{\ulcorner #1\urcorner}
+\newcommand{\dblptbracks}[1]{\langle\!\langle #1\rangle\!\rangle}
+\newcommand{\dblsqbracks}[1]{[\![ #1]\!]}
+
+\newcommand{\kw}[1]{\ensuremath{\mathtt{#1}}}
+\newcommand{\kwop}[1]{\ensuremath{\mathop{\mathtt{#1}}}}
+\newcommand{\kwbin}[1]{\ensuremath{\mathbin{\mathtt{#1}}}}
+
+\newcommand{\cdcolon}{\kwbin{:}}
+\newcommand{\cdcoloncolon}{\kwbin{::}}
+\newcommand{\cdcomma}{\kw{,}}
+\newcommand{\cdperiod}{\kw{.}}
+\newcommand{\cddot}{\cdperiod}
+\newcommand{\cddotdot}{\kw{{.}{.}}}
+\newcommand{\cdsemi}{\kw{;}}
+\newcommand{\cdbar}{\kwbin{|}} %|
+\newcommand{\cdatsign}{\kw{@}}
+\newcommand{\cdunderscore}{\kw{\_}}
+\newcommand{\cdsharp}{\kw{\#}}
+\newcommand{\cddollar}{\kw{\$}}
+\newcommand{\cdtwiddle}{\kw{\~}}
+\newcommand{\cdhat}{\kw{\^{ }}}
+\newcommand{\cdstar}{\kw{*}}
+\newcommand{\cdamper}{\kw{\&}}
+
+\newcommand{\seq}[2]{{#2}_1,\dots,{#2}_{#1}}
+\newcommand{\zeq}[2]{{#2}_0,\dots,{#2}_{#1-1}}
+\newcommand{\seqsep}[3]{{#3}_1\mathbin{#1}\dots\mathbin{#1}{#3}_{#2}}
+\newcommand{\zeqsep}[3]{{#3}_0\mathbin{#1}\dots\mathbin{#1}{#3}_{#2-1}}
+
+\newcommand{\abs}[1]{\lvert#1\rvert}
+
+\newcommand{\cdparens}[1]{\kw{(}{#1}\kw{)}}
+\newcommand{\cdnoparens}[1]{#1}
+\newcommand{\noparens}[1]{#1}
+\newcommand{\cdcdc}{\kw{,}\dots\kw{,}}
+\newcommand{\cdcds}{\kw{;}\dots\kw{;}}
+\newcommand{\cdseq}[2]{#2_{1}\cdcdc #2_{#1}}
+\newcommand{\cdzeq}[2]{#2_{0}\cdcdc #2_{#1-1}}
+\newcommand{\cdsseq}[2]{#2_{1}\cdcds #2_{#1}}
+\newcommand{\cdszeq}[2]{#2_{0}\cdcds #2_{#1-1}}
+\newcommand{\cdpseq}[4]{{#3}_{1}{#2}{#4}_{1}\cdcdc{#3}_{#1}{#2}{#4}_{#1}}
+\newcommand{\cdpzeq}[4]{{#3}_{0}{#2}{#4}_{0}\cdcdc{#3}_{#1-1}{#2}{#4}_{#1-1}}
+\newcommand{\cdsqbracks}[1]{\kw{[}{#1}\kw{]}}
+\newcommand{\cdptbracks}[1]{\kw{<}{#1}\kw{>}}
+\newcommand{\cdrdbracks}[1]{\cdparens{#1}}
+\newcommand{\cdbrackets}[1]{\cdptbracks{#1}}
+\newcommand{\cdbraces}[1]{\kw{\{}{#1}\kw{\}}}
+\newcommand{\cdcurlbracks}[1]{\cdbraces{#1}}
+
+\newcommand{\IsType}[1]{\JPost{#1}{\textsf{type}}}
+\newcommand{\IsTp}[1]{\IsType{#1}}
+\newcommand{\IsKd}[1]{\JPost{#1}{\textsf{kind}}}
+\newcommand{\EqTy}[2]{{#1}\equiv{#2}}
+\newcommand{\EqTp}[2]{\EqTy{#1}{#2}}
+\newcommand{\EqKd}[2]{{#1}\equiv{#2}}
+\newcommand{\IsOf}[2]{{#1}\mathrel{:}{#2}}
+\newcommand{\IsOfP}[2]{\IsOf{#1}{#2}}
+\newcommand{\IsOfM}[2]{{#1}\mathrel{\altdiv}{#2}}
+\newcommand{\IsOfMW}[3]{{#1}\mathrel{\altdiv}{#2}\mathrel{@}{#3}}
+\newcommand{\IsOfW}[3]{{#1}\mathbin{:}{#2}\mathbin{@}{#3}}
+\newcommand{\Has}[2]{{#1}\mathbin{\twiddle}{#2}}
+\newcommand{\HasW}[3]{{#1}\mathbin{\twiddle}{#2}\mathbin{@}{#3}}
+\newcommand{\IsOfKd}[2]{{#1}\mathrel{\coloncolon}{#2}}
+\newcommand{\TightIsOfKd}[2]{{#1}\mathbin{\coloncolon}{#2}}
+\newcommand{\TightIsOf}[2]{{#1}\mathbin{:}{#2}}
+\newcommand{\NIsOfKd}[2]{{#1}\mathrel{\Uparrow}{#2}}
+\newcommand{\CIsOfKd}[2]{{#1}\mathrel{\Downarrow}{#2}}
+\newcommand{\EqOfKd}[3]{{#1}\mathrel{\equiv}{#2}\mathrel{\coloncolon}{#3}}
+\newcommand{\IsVal}[1]{\JPost{#1}{\textsf{val}}}
+\newcommand{\IsntVal}[1]{\JPost{#1}{\mathop{\neg}\textsf{val}}}
+\newcommand{\LIsVal}[2]{\JPost{#2}{\textsf{val}_{#1}}}
+\newcommand{\IsErr}[1]{\JPost{#1}{\textsf{err}}}
+\newcommand{\IsOK}[1]{\JPost{#1}{\textsf{ok}}}
+\newcommand{\LIsOK}[2]{\JPost{#2}{\textsf{ok}_{#1}}}
+
+\newcommand{\IsOfSy}[2]{{#1}\uparrow{#2}}
+\newcommand{\IsOfAn}[2]{{#1}\downarrow{#2}}
+
+\newcommand{\IsOpnVal}[2]{{#1}\vdash\IsVal{#2}}
+
+\newcommand{\IsMobile}[1]{\JPost{#1}{\textsf{mobile}}}
+
+\newcommand{\DefEqv}[3]{\IsOf{{#1}\equiv{#2}}{#3}}
+\newcommand{\IsDefEqvCl}[3]{\DefEqv{#1}{#2}{#3}}
+\newcommand{\IsDefEqv}[4]{{#1}\vdash\DefEqv{#2}{#3}{#4}}
+\newcommand{\IsDefEqvU}[3]{{#1}\vdash{#2}\equiv{#3}}
+\newcommand{\DefEqvU}[2]{{#1}\equiv{#2}}
+
+\newcommand{\JPre}[2]{{#2}\;{#1}}
+\newcommand{\JPPre}[2]{{#2}\parens{#1}}
+\newcommand{\JPost}[2]{{#1}\;{#2}}
+\newcommand{\JPPost}[2]{\parens{#1}\;{#2}}
+%\newcommand{\JPostTight}[2]{{#1}\,{#2}}
+\newcommand{\JInfix}[3]{{#1}\mathrel{#2}{#3}}
+
+% \newcommand{\imode}{{\forall}}
+% \newcommand{\omode}{{\exists}}
+% \newcommand{\oumode}{{\exists!}}
+% \newcommand{\opmode}{{\exists^{\leq 1}}}
+
+%\newcommand{\tytransto}[2]{{#1}\leadsto {#2}}
+%\newcommand{\extransto}[2]{{#1}\leadsto {#2}}
+% \newcommand{\extranstostacked}[2]{%
+%   \begin{array}[c]{c}
+%     {#1} \\
+%     \leadsto \\
+%     {#2}
+%   \end{array}
+% }
+
+% finite functions
+\newcommand{\ff}[1]{\braces{#1}}
+\newcommand{\pairff}[2]{{#1}\mathbin{\hookrightarrow}{#2}}
+\newcommand{\empff}{\emptyset}
+\newcommand{\singff}[2]{\ff{\pairff{#1}{#2}}}
+\newcommand{\combff}[2]{#1\mathbin{\otimes}#2}
+\newcommand{\extff}[3]{\combff{#1}{\singff{#2}{#3}}}
+\newcommand{\varextff}[3]{\combff{#1}{\pairff{#2}{#3}}}
+\newcommand{\appff}[2]{{#1}\parens{#2}}
+\newcommand{\explff}[3]{\ff{\pairff{{#2}_{0}}{{#3}_{0}},\dots,\pairff{{#2}_{{#1}-1}}{{#3}_{{#1}-1}}}}
+\newcommand{\varexplff}[3]{\pairff{#2_{1}}{#3_{1}},\dots,\pairff{#2_{#1}}{#3_{#1}}}
+\newcommand{\domff}[1]{\Domain{#1}}
+\newcommand{\disjff}[2]{\domff{#1}\cap\domff{#2}=\emptyset}
+\newcommand{\genff}[3]{\ff{{#2}\mathbin{\hookrightarrow}{#3}}_{{#2}\in{#1}}}
+
+% families of judgments
+\newcommand{\FamInst}[2]{{#1}\,[{#2}]}
+\newcommand{\JFam}[3]{\FamInst{\JPPre{#3}{#1}}{#2}}
+
+% language names
+\newcommand{\textbsf}[1]{\textbf{\textsf{#1}}}
+\newcommand{\Lang}[1]{\textbsf{#1}}
+
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calB}{\mathcal{B}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calE}{\mathcal{E}}
+\newcommand{\calG}{\mathcal{G}}
+\newcommand{\calI}{\mathcal{I}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\calO}{\mathcal{O}}
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\calQ}{\mathcal{Q}}
+\newcommand{\calR}{\mathcal{R}}
+\newcommand{\calS}{\mathcal{S}}
+\newcommand{\calU}{\mathcal{U}}
+\newcommand{\calV}{\mathcal{V}}
+\newcommand{\calX}{\mathcal{X}}
+\newcommand{\calY}{\mathcal{Y}}
+
+% general judgment
+\newcommand{\vargen}{\mathrel{\vert}}
+\newcommand{\symgen}{\mathrel{\Vert}}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "book"
+%%% End: 
